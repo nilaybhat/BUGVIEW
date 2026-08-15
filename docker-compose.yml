@@ -13,5 +13,26 @@ services:
       timeout: 5s
       retries: 10
 
+  app:
+    build: .
+    container_name: bugtrack-app
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "8787:8787"
+    environment:
+      NODE_ENV: production
+      PORT: "8787"
+      MONGODB_URI: mongodb://mongo:27017/bugtrack
+      CORS_ORIGINS: "*"
+      BUGTRACK_API_KEY: ${BUGTRACK_API_KEY:-}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      GITHUB_REPO: ${GITHUB_REPO:-}
+    volumes:
+      - bugtrack-uploads:/app/server/uploads
+
 volumes:
   bugtrack-mongo-data:
+  bugtrack-uploads:

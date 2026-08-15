@@ -1,5 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -8,6 +9,8 @@ import env from './config/env.js';
 import apiRoutes from './routes/api.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
 import { logger } from './utils/logger.js';
+
+const DASHBOARD_DIST = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../dashboard/dist');
 
 export function createApp() {
   const app = express();
@@ -34,15 +37,12 @@ export function createApp() {
 
   app.use('/api', apiRoutes);
 
-  if (env.isProd) {
-    const dist = path.resolve(process.cwd(), '../dashboard/dist');
-    if (fs.existsSync(dist)) {
-      app.use(express.static(dist));
-      app.get('*', (req, res, next) => {
-        if (req.path.startsWith('/api')) return next();
-        res.sendFile(path.join(dist, 'index.html'));
-      });
-    }
+  if (fs.existsSync(DASHBOARD_DIST)) {
+    app.use(express.static(DASHBOARD_DIST));
+    app.get('*', (req, res, next) => {
+      if (req.path.startsWith('/api')) return next();
+      res.sendFile(path.join(DASHBOARD_DIST, 'index.html'));
+    });
   }
 
   app.use(notFoundHandler);

@@ -11,15 +11,36 @@ tools/         dev scripts (icon generator, live end-to-end check)
 
 ## Quick start (single project)
 
-Everything lives in this one folder. From the repo root:
+Everything lives in this one folder, and the whole app runs as a single unit.
+
+### Option A — one command, full stack (Docker)
 
 ```bash
-npm run setup             # install server + dashboard dependencies
-npm run mongo             # start MongoDB (Docker Compose)
-npm run seed              # load 20 demo bugs (BUG-1042 … BUG-1061)
-npm run dev:server        # API on http://localhost:8787   (terminal 1)
-npm run dev:dashboard     # UI on  http://localhost:5173   (terminal 2)
-npm run e2e               # optional: live end-to-end pipeline check (29 assertions)
+docker compose up --build -d     # starts MongoDB + the app (UI + API) on :8787
+docker compose exec app node src/jobs/seed.js   # first run only: load demo bugs
+```
+
+Open http://localhost:8787 — the dashboard and API are served by one container.
+
+### Option B — one process, no Docker
+
+```bash
+npm run setup        # install server + dashboard dependencies
+npm run mongo        # start MongoDB (Docker Compose)
+npm run start        # build the dashboard and serve UI + API together on :8787
+```
+
+The API server serves the built dashboard itself, so a single Node process runs the entire project.
+
+### Option C — development mode (hot reload, two processes)
+
+```bash
+npm run setup
+npm run mongo
+npm run seed          # load 20 demo bugs (BUG-1042 … BUG-1061)
+npm run dev:server    # API on http://localhost:8787   (terminal 1)
+npm run dev:dashboard # UI on  http://localhost:5173   (terminal 2)
+npm run e2e           # optional: live end-to-end pipeline check (29 assertions)
 ```
 
 Then load the extension: `chrome://extensions` → Developer mode → **Load unpacked** → `extension/`.
