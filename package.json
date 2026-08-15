@@ -1,0 +1,19 @@
+{
+  "name": "bugtrack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BUGTRACK — full-stack Chrome bug reporting system (MV3 extension + Express/MongoDB API + React dashboard)",
+  "scripts": {
+    "setup": "npm run setup:server && npm run setup:dashboard",
+    "setup:server": "npm --prefix server install",
+    "setup:dashboard": "npm --prefix dashboard install",
+    "mongo": "docker compose up -d",
+    "mongo:stop": "docker compose down",
+    "seed": "npm --prefix server run seed",
+    "dev:server": "npm --prefix server run dev",
+    "dev:dashboard": "npm --prefix dashboard run dev",
+    "build:dashboard": "npm --prefix dashboard run build",
+    "test": "npm --prefix server test",
+    "e2e": "node tools/e2e-live.mjs"
+  }
+}

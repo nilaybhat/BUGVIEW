@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BUGTRACK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&family=Unbounded:wght@500;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="bt-header">
+    <div class="bt-brand">
+      <span class="bt-brand-mark">BT</span>
+      <div class="bt-brand-text">
+        <h1>BUGTRACK</h1>
+        <span class="bt-brand-sub">signal recorder</span>
+      </div>
+    </div>
+    <div class="bt-rec" id="recDot" title="Live capture active">
+      <span class="bt-rec-dot"></span>REC
+    </div>
+  </header>
+
+  <main>
+    <section class="bt-page">
+      <div class="bt-page-icon" id="pageIcon">🌐</div>
+      <div class="bt-page-meta">
+        <span class="bt-page-title" id="pageTitle">Loading…</span>
+        <span class="bt-page-url" id="pageUrl"></span>
+      </div>
+      <button class="bt-icon-btn" id="refreshBtn" title="Re-scan page">⟳</button>
+    </section>
+
+    <section class="bt-meters">
+      <div class="bt-meter is-error">
+        <span class="bt-meter-num" id="mErrors">0</span>
+        <span class="bt-meter-label">JS ERRORS</span>
+      </div>
+      <div class="bt-meter is-warn">
+        <span class="bt-meter-num" id="mNetwork">0</span>
+        <span class="bt-meter-label">FAILED REQ</span>
+      </div>
+      <div class="bt-meter is-amber">
+        <span class="bt-meter-num" id="mWarnings">0</span>
+        <span class="bt-meter-label">WARNINGS</span>
+      </div>
+      <div class="bt-meter is-mixed">
+        <span class="bt-meter-num" id="mMixed">0</span>
+        <span class="bt-meter-label">MIXED CT</span>
+      </div>
+    </section>
+
+    <section class="bt-feed" id="feedSection" hidden>
+      <div class="bt-feed-head">
+        <span class="bt-feed-title">CAPTURED SIGNALS</span>
+        <span class="bt-feed-count" id="feedCount"></span>
+      </div>
+      <ul class="bt-feed-list" id="feedList"></ul>
+    </section>
+
+    <section class="bt-tools">
+      <button class="bt-tool-btn" id="btnInspect">🖱 Inspect DOM</button>
+      <button class="bt-tool-btn" id="btnScan">🩺 Run Health Scan</button>
+    </section>
+
+    <section class="bt-panel" id="elementPanel" hidden>
+      <div class="bt-panel-head">PICKED ELEMENT <span class="bt-close" id="elementClose">✕</span></div>
+      <div id="elementBody"></div>
+    </section>
+
+    <section class="bt-panel" id="healthPanel" hidden>
+      <div class="bt-panel-head">WEBSITE HEALTH <span class="bt-close" id="healthClose">✕</span></div>
+      <div id="healthBody"></div>
+    </section>
+
+    <section class="bt-actions-feed" id="actionsSection" hidden>
+      <div class="bt-feed-head">
+        <span class="bt-feed-title">RECORDED ACTIONS</span>
+        <span class="bt-feed-count" id="actionsCount"></span>
+      </div>
+      <ul class="bt-feed-list" id="actionsList"></ul>
+    </section>
+
+    <section class="bt-form">
+      <label class="bt-label" for="btTitle">TITLE</label>
+      <input id="btTitle" class="bt-input" type="text" maxlength="160" placeholder="Describe the bug…" />
+
+      <label class="bt-label" for="btDesc">DETAILS</label>
+      <textarea id="btDesc" class="bt-input bt-textarea" rows="3" maxlength="2000" placeholder="Steps to reproduce (optional)"></textarea>
+
+      <div class="bt-prio-row">
+        <label class="bt-label" for="btPrio">PRIORITY</label>
+        <div class="bt-prio-group" id="prioGroup">
+          <button class="bt-prio" data-value="critical">🔴 Critical</button>
+          <button class="bt-prio" data-value="high">🟠 High</button>
+          <button class="bt-prio" data-value="medium">🟡 Medium</button>
+          <button class="bt-prio" data-value="low">🟢 Low</button>
+        </div>
+      </div>
+
+      <div class="bt-reporter">
+        <label class="bt-label" for="btReporter">REPORTER</label>
+        <input id="btReporter" class="bt-input" type="text" maxlength="60" placeholder="Your name" />
+      </div>
+    </section>
+
+    <section class="bt-actions">
+      <button id="btnCapture" class="bt-btn bt-btn-capture">📸 Capture &amp; Annotate</button>
+      <button id="btnReport" class="bt-btn bt-btn-report" disabled>Submit Bug Report</button>
+    </section>
+
+    <section class="bt-status" id="status" hidden></section>
+
+    <div class="bt-explain" id="explainBox" hidden>
+      <div class="bt-explain-head">WHY THIS ERROR HAPPENS</div>
+      <div class="bt-explain-body" id="explainBody"></div>
+      <button class="bt-link" id="explainClose">dismiss ✕</button>
+    </div>
+
+    <footer class="bt-footer">
+      <button class="bt-link" id="btnDashboard">Open dashboard ↗</button>
+      <button class="bt-link" id="btnSettings">⚙ Settings</button>
+    </footer>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

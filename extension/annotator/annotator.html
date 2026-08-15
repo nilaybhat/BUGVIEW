@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BUGTRACK — Annotate Screenshot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&family=Unbounded:wght@500;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="annotator.css" />
+</head>
+<body>
+  <header class="an-header">
+    <div class="an-brand">
+      <span class="an-brand-mark">BT</span>
+      <span class="an-brand-name">BUGTRACK <em>/ annotator</em></span>
+    </div>
+    <div class="an-tools" id="toolbar">
+      <button class="an-tool" data-tool="rect" title="Rectangle">▭</button>
+      <button class="an-tool" data-tool="arrow" title="Arrow">↗</button>
+      <button class="an-tool" data-tool="highlight" title="Highlight">🖍</button>
+      <button class="an-tool" data-tool="blur" title="Blur sensitive info">▧</button>
+      <button class="an-tool" data-tool="text" title="Text">T</button>
+      <span class="an-sep"></span>
+      <input type="color" id="colorPicker" class="an-color" value="#e6002e" title="Color" />
+      <button class="an-tool" id="undoBtn" title="Undo">↩</button>
+      <button class="an-tool" id="clearBtn" title="Clear annotations">✕</button>
+    </div>
+    <div class="an-header-right">
+      <button class="an-btn" id="downloadBtn">⬇ PNG</button>
+      <button class="an-btn an-btn-primary" id="submitBtn">Submit Report ➔</button>
+    </div>
+  </header>
+
+  <div class="an-body">
+    <aside class="an-sidebar">
+      <div class="an-side-head">REPORT FORM</div>
+      <label class="an-label" for="anTitle">TITLE *</label>
+      <input id="anTitle" class="an-input" maxlength="160" placeholder="e.g. Login button doesn't work" />
+
+      <label class="an-label" for="anDesc">DETAILS</label>
+      <textarea id="anDesc" class="an-input an-area" rows="4" maxlength="2000" placeholder="Steps to reproduce…"></textarea>
+
+      <div class="an-prio-head">PRIORITY</div>
+      <div class="an-prios" id="prios">
+        <button class="an-prio" data-value="critical">🔴 Critical</button>
+        <button class="an-prio" data-value="high">🟠 High</button>
+        <button class="an-prio" data-value="medium">🟡 Medium</button>
+        <button class="an-prio" data-value="low">🟢 Low</button>
+      </div>
+
+      <label class="an-label" for="anReporter">REPORTER</label>
+      <input id="anReporter" class="an-input" maxlength="60" placeholder="Your name" />
+
+      <div class="an-side-foot">
+        <div class="an-diag-line"><span class="an-diag-dot err"></span><span id="diagErrors">0</span> JS errors</div>
+        <div class="an-diag-line"><span class="an-diag-dot net"></span><span id="diagNet">0</span> failed requests</div>
+        <div class="an-diag-line"><span class="an-diag-dot mix"></span><span id="diagMixed">0</span> mixed content</div>
+      </div>
+    </aside>
+
+    <main class="an-stage">
+      <div class="an-canvas-wrap" id="canvasWrap">
+        <canvas id="canvas"></canvas>
+        <div class="an-hint" id="hint">
+          <span id="hintText">Drag on the page to mark the problem area</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="an-status" id="status" hidden></div>
+  <div class="an-done" id="doneScreen" hidden>
+    <div class="an-done-box">
+      <div class="an-done-mark">✓</div>
+      <div class="an-done-title">Bug recorded</div>
+      <div class="an-done-id" id="doneId">BUG-0000</div>
+      <p>The report, screenshot and diagnostics are on their way to the dashboard.</p>
+      <div class="an-done-actions">
+        <button class="an-btn" id="doneOpen">Open dashboard</button>
+        <button class="an-btn an-btn-primary" id="doneClose">Close tab</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="annotator.js"></script>
+</body>
+</html>

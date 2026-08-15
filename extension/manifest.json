@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "BUGTRACK — Bug Reporter",
+  "short_name": "BUGTRACK",
+  "version": "1.0.0",
+  "description": "One-click bug reporting straight from any page: captures console errors, failed network requests, screenshots with annotations, and full diagnostics.",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage",
+    "contextMenus",
+    "webRequest"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "BUGTRACK — Report a bug",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/diagnostics.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["inject/main-world.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

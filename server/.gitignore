@@ -1,0 +1,5 @@
+# --- Server build output ---
+node_modules/
+uploads/*
+!uploads/.gitkeep
+.env
