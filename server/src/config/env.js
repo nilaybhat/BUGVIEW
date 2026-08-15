@@ -12,6 +12,7 @@ const env = {
     .map((s) => s.trim())
     .filter(Boolean),
   uploadDir: process.env.UPLOAD_DIR || 'uploads/screenshots',
+  blobToken: process.env.BLOB_READ_WRITE_TOKEN || null,
   apiKey: process.env.BUGTRACK_API_KEY || null,
   maxBodyBytes: (parseInt(process.env.MAX_BODY_MB || '20', 10) || 20) * 1024 * 1024,
   githubToken: process.env.GITHUB_TOKEN || null,

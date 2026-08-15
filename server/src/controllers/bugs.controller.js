@@ -59,9 +59,15 @@ export const getStats = asyncHandler(async (_req, res) => {
 
 export const serveScreenshot = asyncHandler(async (req, res) => {
   const { readFile } = await import('node:fs/promises');
-  const { resolveScreenshotPath } = await import('../services/screenshot.service.js');
-  const filePath = resolveScreenshotPath(req.params.filename);
-  const buffer = await readFile(filePath);
+  const { readScreenshot } = await import('../services/screenshot.service.js');
+  const result = await readScreenshot(req.params.filename);
+  if (result.notFound) {
+    return res.status(404).json({ error: 'Screenshot not found' });
+  }
+  if (result.blob) {
+    return res.redirect(302, result.blob.url);
+  }
+  const buffer = await readFile(result.filePath);
   const mime = req.params.filename.endsWith('.svg')
     ? 'image/svg+xml'
     : req.params.filename.endsWith('.png')

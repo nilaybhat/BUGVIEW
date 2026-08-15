@@ -8,8 +8,10 @@ RUN npm run build
 FROM node:22-alpine
 ENV NODE_ENV=production
 WORKDIR /app
-COPY server/package.json server/package-lock.json ./server/
-RUN npm --prefix server ci --omit=dev --no-audit --no-fund
+COPY package.json package-lock.json ./
+COPY server/package.json ./server/
+COPY dashboard/package.json ./dashboard/
+RUN npm ci --omit=dev --no-audit --no-fund
 COPY server/src ./server/src
 COPY --from=dashboard-builder /build/dashboard/dist ./dashboard/dist
 WORKDIR /app/server

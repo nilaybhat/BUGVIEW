@@ -45,6 +45,31 @@ npm run e2e           # optional: live end-to-end pipeline check (29 assertions)
 
 Then load the extension: `chrome://extensions` → Developer mode → **Load unpacked** → `extension/`.
 
+## Deploy to Vercel (one project)
+
+The dashboard (static) and API (serverless Express) deploy as **one Vercel project** from this repo — `vercel.json` routes `/api/*` to the serverless function and everything else to the SPA.
+
+1. Push this repo to GitHub (e.g. `nilaybhat/BUGVIEW`).
+2. On [vercel.com](https://vercel.com) → **New Project** → import the GitHub repo.
+3. Project settings:
+   - **Framework Preset:** Other
+   - **Root Directory:** `.` (repo root)
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist-vercel`
+4. Add **Environment Variables**:
+   - `MONGODB_URI` — your MongoDB Atlas connection string
+   - `BLOB_READ_WRITE_TOKEN` — from a Vercel **Blob** store (Create → Storage → Blob). New screenshots persist in Blob; without it, disk storage is used (won't survive on serverless).
+   - optional: `BUGTRACK_API_KEY`, `GITHUB_TOKEN`, `GITHUB_REPO`, `CORS_ORIGINS`
+5. **Deploy.** UI + API share one URL (e.g. `https://bugview.vercel.app`).
+6. Point the extension at it: popup → **Settings** → API base URL → your Vercel URL.
+
+Notes:
+- MongoDB must be hosted externally (Vercel has no database). Atlas is recommended and works with the free tier.
+- The Chrome extension itself can't deploy to Vercel — load it unpacked locally.
+- Re-seed from your machine with Atlas env vars if you want fresh demo data:
+  `cd server && $env:MONGODB_URI='<atlas uri>' ; npm run seed`
+- Demo bugs seeded before adding `BLOB_READ_WRITE_TOKEN` have disk-only screenshots; they 404 gracefully on Vercel (new reports get Blob screenshots).
+
 ## Architecture
 
 - **Extension** — a content script injected into every page intercepts `console.error`, failed `fetch`/XHR, `unhandledrejection`, and mixed-content warnings; it also records user interactions (click/input/keydown/submit/navigate) as reproduction steps with safe, redacted selectors. The popup exposes live meters, a DOM inspector (point-and-pick element), a passive health/security scanner (Lighthouse-style scores + security header checks), and a canvas annotator for screenshots.

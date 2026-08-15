@@ -44,6 +44,20 @@ export async function storeScreenshot(bugId, { mime, dataUrl, annotations }) {
   }
   await ensureUploadDir();
   const filename = `${bugId}.${ext}`;
+
+  if (env.blobToken) {
+    const { put } = await import('@vercel/blob');
+    const blob = await put(filename, buffer, { access: 'public', contentType: mime });
+    logger.info(`Screenshot stored (blob): ${filename} (${buffer.length} bytes)`);
+    return {
+      mime,
+      filename,
+      sizeBytes: buffer.length,
+      annotations: Array.isArray(annotations) ? annotations.slice(0, 200) : [],
+      blobUrl: blob.url,
+    };
+  }
+
   await fs.writeFile(path.join(uploadRoot, filename), buffer);
   logger.info(`Screenshot stored: ${filename} (${buffer.length} bytes)`);
   return {
@@ -52,6 +66,23 @@ export async function storeScreenshot(bugId, { mime, dataUrl, annotations }) {
     sizeBytes: buffer.length,
     annotations: Array.isArray(annotations) ? annotations.slice(0, 200) : [],
   };
+}
+
+export async function readScreenshot(filename) {
+  const base = path.basename(filename);
+  if (base !== filename || /\.\./.test(base)) {
+    throw ApiError.badRequest('Invalid filename');
+  }
+  if (env.blobToken) {
+    try {
+      const { get } = await import('@vercel/blob');
+      return { blob: await get(base) };
+    } catch (err) {
+      if (err && (err.status === 404 || err.statusCode === 404)) return { notFound: true };
+      throw err;
+    }
+  }
+  return { filePath: path.join(uploadRoot, base) };
 }
 
 export function resolveScreenshotPath(filename) {
