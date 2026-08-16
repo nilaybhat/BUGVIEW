@@ -10,7 +10,8 @@
     "scripting",
     "storage",
     "contextMenus",
-    "webRequest"
+    "webRequest",
+    "windows"
   ],
   "host_permissions": ["<all_urls>"],
   "background": {

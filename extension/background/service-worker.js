@@ -14,7 +14,8 @@ async function currentTab() {
 }
 
 function buildEnvInfo(win) {
-  const ua = (win && win.navigator && win.navigator.userAgent) || '';
+  const ua = navigator.userAgent || '';
+  const w = win || {};
   return {
     browserName: /Edg\//.test(ua)
       ? 'Microsoft Edge'
@@ -26,11 +27,11 @@ function buildEnvInfo(win) {
             ? 'Safari'
             : 'Unknown',
     userAgent: ua,
-    platform: (win && win.navigator && win.navigator.platform) || 'unknown',
-    language: (win && win.navigator && win.navigator.language) || 'unknown',
-    screenResolution: win ? `${win.screen.width}x${win.screen.height}` : 'unknown',
-    viewport: win ? `${win.innerWidth}x${win.innerHeight}` : 'unknown',
-    devicePixelRatio: win ? win.devicePixelRatio : 1,
+    platform: navigator.platform || 'unknown',
+    language: navigator.language || 'unknown',
+    screenResolution: w.width ? `${w.width}x${w.height}` : 'unknown',
+    viewport: w.width ? `${w.width}x${w.height}` : 'unknown',
+    devicePixelRatio: navigator.devicePixelRatio || 1,
   };
 }
 

@@ -292,7 +292,7 @@
       case 'BT_SCAN': {
         scanHealth()
           .then((result) => sendResponse({ ok: true, health: result }))
-          .catch(() => sendResponse({ ok: false, error: 'Scan failed' }));
+          .catch((err) => sendResponse({ ok: false, error: err && err.message ? err.message : String(err) }));
         return true;
       }
       case 'BT_GET_META': {

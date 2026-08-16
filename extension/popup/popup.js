@@ -49,7 +49,14 @@
     return new Promise((resolve) => {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (!tabs[0] || !tabs[0].id) return resolve({ ok: false });
-        chrome.tabs.sendMessage(tabs[0].id, message, (resp) => resolve(resp || { ok: false, error: 'No page listening' }));
+        try {
+          chrome.tabs.sendMessage(tabs[0].id, message, (resp) => {
+            const err = chrome.runtime.lastError;
+            resolve(resp || { ok: false, error: err ? String(err.message || err) : 'No page listening' });
+          });
+        } catch (err) {
+          resolve({ ok: false, error: String(err && err.message ? err.message : err) });
+        }
       });
     });
   }
