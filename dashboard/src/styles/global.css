@@ -530,3 +530,36 @@ pre.code .tok { color: var(--teal); }
 /* Screenshot modal + drawer helpers */
 .shot-backdrop, .shot-box { will-change: transform, opacity; }
 .drawer-panel { will-change: transform; }
+
+/* ---------- footer ---------- */
+.bt-footer {
+  border-top: 1px solid var(--line);
+  padding: 22px 0 28px;
+  margin-top: 60px;
+}
+.bt-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.bt-footer-owner {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.bt-footer-handle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--red);
+  padding-bottom: 1px;
+  transition: opacity 0.2s ease;
+}
+.bt-footer-handle:hover { opacity: 0.7; }

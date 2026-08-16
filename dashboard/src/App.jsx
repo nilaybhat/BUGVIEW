@@ -9,6 +9,24 @@ import Overview from './pages/Overview';
 import Bugs from './pages/Bugs';
 import BugDetail from './pages/BugDetail';
 
+function Footer() {
+  return (
+    <footer className="bt-footer">
+      <div className="wrap bt-footer-inner">
+        <span className="bt-footer-owner">BUGTRACK · built by Nilay_bhattacharya</span>
+        <a
+          className="bt-footer-handle"
+          href="https://github.com/nilaybhat"
+          target="_blank"
+          rel="noreferrer"
+        >
+          @niluextra
+        </a>
+      </div>
+    </footer>
+  );
+}
+
 function TransitionOverlay() {
   const ref = useRef(null);
   const location = useLocation();
@@ -58,6 +76,7 @@ function Shell() {
         <Route path="/bugs" element={<Bugs />} />
         <Route path="/bugs/:id" element={<BugDetail />} />
       </Routes>
+      <Footer />
     </>
   );
 }
