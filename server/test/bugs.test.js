@@ -1,5 +1,7 @@
 import { before, after, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import path from 'node:path';
+import { mkdirSync } from 'node:fs';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connectDatabase, disconnectDatabase } from '../src/database/connection.js';
 import { Bug } from '../src/models/Bug.js';
@@ -11,7 +13,14 @@ let mongod;
 let app;
 
 before(async () => {
-  mongod = await MongoMemoryServer.create();
+  const tmpDir = path.join('D:\\', '.cache', 'mongodb-tmp');
+  mkdirSync(tmpDir, { recursive: true });
+  process.env.TMPDIR = tmpDir;
+  process.env.TMP = tmpDir;
+  process.env.TEMP = tmpDir;
+  const cacheDir = path.join(process.env.MONGOMS_DOWNLOAD_DIR || 'D:\\', '.cache', 'mongodb-binaries');
+  mkdirSync(cacheDir, { recursive: true });
+  mongod = await MongoMemoryServer.create({ binary: { downloadDir: cacheDir } });
   await connectDatabase(mongod.getUri());
   await Bug.deleteMany({});
   await Counter.deleteMany({});
